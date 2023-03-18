@@ -20,7 +20,12 @@ public class LoginController {
     }
 
     @GetMapping("/index")
-    public String afterLogin(){
+    public String afterLoginRoleAdmin(){
         return "index";
+    }
+
+    @GetMapping("/shop")
+    public String afterLoginRoleUser(){
+        return "shop";
     }
 }

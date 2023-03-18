@@ -7,9 +7,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
@@ -49,7 +53,8 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")  //login with this URL
                 .loginProcessingUrl("/do-login") //when pass ID and password, th:action in thymeleaf will send request to "do-login"
-                .defaultSuccessUrl("/index") //login success -> redirect to URL: index.html
+                //.defaultSuccessUrl("/index") //login success -> redirect to URL: index.html
+                .successHandler(successHandler())   //access permission setting: if ADMIN -> go to admin page, if user -> go to user page.
                 .permitAll()
                 .and()
                 .logout()
@@ -58,5 +63,19 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))  //access to UTL : /logout, it will logout.
                 .logoutSuccessUrl("/login?logout")
                 .permitAll();
+    }
+
+    private AuthenticationSuccessHandler successHandler() {
+        return (request, response, authentication) -> {
+            Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+            System.out.println("value of role: "+ roles);
+            if (roles.contains("ADMIN")) {
+                response.sendRedirect("index");
+            } else if (roles.contains("USER")) {
+                response.sendRedirect("shop");
+            } else {
+                throw new IllegalStateException("User has no valid role");
+            }
+        };
     }
 }
