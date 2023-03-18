@@ -67,7 +67,7 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
 
     private AuthenticationSuccessHandler successHandler() {
         return (request, response, authentication) -> {
-            Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+            Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());  //base on file UserDetails.java in line 21, system know what "Role" user have.
             System.out.println("value of role: "+ roles);
             if (roles.contains("ADMIN")) {
                 response.sendRedirect("index");

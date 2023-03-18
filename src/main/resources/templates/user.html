@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+</head>
+<body>
+<div style="width: 400px; height: 400px;">
+    <canvas id="myChart"></canvas>
+</div>
+
+<ul>
+    <li>VIP1: [[${vip1Percentage}]]%</li>
+    <li>VIP2: [[${vip2Percentage}]]%</li>
+    <li>Standard: [[${standardPercentage}]]%</li>
+    <li>Normal: [[${normalPercentage}]]%</li>
+</ul>
+
+<script>
+    let  labels = ['VIP1','VIP2','Standard', 'Normal'];
+    var vip1Percentage = [[${vip1Percentage}]];
+    var vip2Percentage = [[${vip2Percentage}]];
+    var standardPercentage = [[${standardPercentage}]];
+    var normalPercentage = [[${normalPercentage}]];
+
+    const data = {
+        labels  : labels,
+        datasets: [{
+            data: [vip1Percentage, vip2Percentage, standardPercentage, normalPercentage,],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgb(179,27,213)',
+                'rgb(46,206,49)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgb(179,27,213)',
+                'rgb(46,206,49)',
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'pie',
+        data: data,
+        options: {
+            plugins: {
+                datalabels: {
+                    display: true,
+                    color: '#070707',
+                    formatter: (value, ctx) => {
+                        let sum = 0;
+                        let dataArr = ctx.chart.data.datasets[0].data;
+                        dataArr.map(data => {
+                            sum += data;
+                        });
+                        let percentage = (value*100 / sum).toFixed(2)+"%";
+                        return percentage;
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'right'
+                },
+                title: {
+                    display: true,
+                    text: 'User type chart',
+                    fontSize: 20,
+                    fontColor: '#000'
+                },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+        },
+        plugins: [ChartDataLabels]
+    };
+
+    const chart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+</script>
+</body>
+</html>
