@@ -72,7 +72,7 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
             if (roles.contains("ADMIN")) {
                 response.sendRedirect("admin-page");
             } else if (roles.contains("USER")) {
-                response.sendRedirect("shop");
+                response.sendRedirect("user-homepage");
             } else {
                 throw new IllegalStateException("User has no valid role");
             }

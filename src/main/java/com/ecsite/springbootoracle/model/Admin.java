@@ -26,14 +26,6 @@ public class Admin {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "admins_rolos", joinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "admin_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
-    private Collection<Role> roles;
-
-    public Admin(String firstName, String lastName, String username, String password, Collection<Role> roles) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-    }
+    private Collection<Role> roles; //Output Assuming of Collection<Role>:  [Role(id=1, name=ADMIN), Role(id=2, name=MEMBER)]
 
 }
