@@ -70,7 +70,7 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
             Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());  //base on file UserDetails.java in line 21, system know what "Role" user have.
             System.out.println("value of role: "+ roles);
             if (roles.contains("ADMIN")) {
-                response.sendRedirect("index");
+                response.sendRedirect("admin-page");
             } else if (roles.contains("USER")) {
                 response.sendRedirect("shop");
             } else {

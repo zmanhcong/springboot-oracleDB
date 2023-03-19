@@ -19,9 +19,9 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/admin-page")
     public String afterLoginRoleAdmin(){
-        return "index";
+        return "/admin/admin-page";
     }
 
     @GetMapping("/shop")
