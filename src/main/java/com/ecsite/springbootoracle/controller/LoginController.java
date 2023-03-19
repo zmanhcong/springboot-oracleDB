@@ -91,7 +91,8 @@ public class LoginController {
                 return "register";
             }
         }catch (Exception e){
-
+            e.printStackTrace();
+            session.setAttribute("message", "Server is error, please try again!!");
         }
         return "register";
     }
