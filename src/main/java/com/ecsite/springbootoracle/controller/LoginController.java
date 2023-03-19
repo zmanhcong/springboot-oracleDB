@@ -30,7 +30,10 @@ public class LoginController {
     RoleRepository roleRepository;
 
     @GetMapping("/login")
-    public String login(){
+    public String login(HttpSession session){
+//        if(session.getAttribute("errorMessage") != null){
+//            session.removeAttribute("errorMessage");
+//        }
         return "login";
     }
 

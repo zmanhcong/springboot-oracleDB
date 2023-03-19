@@ -22,6 +22,7 @@ public class Admin {
     private String username;
     private String password;
     private String usertype;
+    private boolean isActive;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "admins_rolos", joinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "admin_id"),

@@ -1,23 +1,41 @@
 package com.ecsite.springbootoracle.config;
 
+import com.ecsite.springbootoracle.model.Admin;
+import com.ecsite.springbootoracle.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
 public class AdminConfiguration extends WebSecurityConfigurerAdapter {
+    @Autowired
+    AdminService adminService;
+
     @Bean
     //Find User.
     public UserDetailsService userDetailsService(){
@@ -55,6 +73,7 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/do-login") //when pass ID and password, th:action in thymeleaf will send request to "do-login"
                 //.defaultSuccessUrl("/index") //login success -> redirect to URL: index.html
                 .successHandler(successHandler())   //access permission setting: if ADMIN -> go to admin page, if user -> go to user page.
+                .failureHandler(authenticationFailureHandler())
                 .permitAll()
                 .and()
                 .logout()
@@ -65,17 +84,47 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-    private AuthenticationSuccessHandler successHandler() {
-        return (request, response, authentication) -> {
-            Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());  //base on file UserDetails.java in line 21, system know what "Role" user have.
-            System.out.println("value of role: "+ roles);
-            if (roles.contains("ADMIN")) {
-                response.sendRedirect("admin-page");
-            } else if (roles.contains("USER")) {
-                response.sendRedirect("user-homepage");
-            } else {
-                throw new IllegalStateException("User has no valid role");
+    private AuthenticationFailureHandler authenticationFailureHandler() {
+        return (request, response, exception) -> {
+            String errorMessage = "";
+            if (exception.getClass().isAssignableFrom(BadCredentialsException.class)){
+                errorMessage = "Invalid username or password";
+            } else if (exception.getClass().isAssignableFrom(DisabledException.class)) {
+                errorMessage = "Account is not active, please contact an administrator";
+            }
+            request.getSession().setAttribute("errorMessage", errorMessage);
+            response.sendRedirect("/login?error");
+        };
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+                for (GrantedAuthority grantedAuthority : authorities) {
+                    if (grantedAuthority.getAuthority().equals("ADMIN")) {
+                        response.sendRedirect("admin-page");
+                        return;
+                    } else if (grantedAuthority.getAuthority().equals("USER")) {
+                        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                        String username = userDetails.getUsername();
+                        Admin admin = adminService.findByUsername(username);
+                        if (admin != null && !admin.isActive()) {
+                            request.getSession().setAttribute("errorMessage", "Account is not active, please contact to administrator");
+                            response.sendRedirect("/login?error");
+                        } else {
+                            response.sendRedirect("user-homepage");
+                            return;
+                        }
+                    }
+                    else {
+                        throw new IllegalStateException("User has no valid role, please contact to administrator");
+                    }
+                }
             }
         };
     }
+
 }

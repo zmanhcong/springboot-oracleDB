@@ -33,8 +33,10 @@ public class AdminServiceImpl implements AdminService {
         admin.setUsertype(adminDto.getUsertype());
         if (adminDto.getAccountRole() == "admin"){
             admin.setRoles(Arrays.asList(roleRepository.findByName("ADMIN")));
+            admin.setActive(true);
         }else {
             admin.setRoles(Arrays.asList(roleRepository.findByName("USER")));
+            admin.setActive(false);
         }
         System.out.println("save ok");
         return adminRepository.save(admin);
