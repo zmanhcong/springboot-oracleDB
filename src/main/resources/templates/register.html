@@ -17,12 +17,9 @@
                             <div th:if="${session.message}" >
                                 <p th:text="${session.message}" class = "alert alert-danger" ></p>
                             </div>
-<!--                            <div th:if="${passNotSame_error}" >-->
-<!--                                <p th:text="${passNotSame_error}" class = "alert alert-danger" ></p>-->
-<!--                            </div>-->
-<!--                            <div th:if="${success}">-->
-<!--                                <p th:text="${success}" class = "alert alert-success" ></p>-->
-<!--                            </div>-->
+                            <div th:if="${session.successMessage}">
+                                <p th:text="${session.successMessage}" class = "alert alert-success" ></p>
+                            </div>
 
 
                             <form th:action="@{/register}" th:object="${adminDto}" method="post">
@@ -67,6 +64,17 @@
                                     </div>
                                     <div class="alert alert-danger" th:if="${passNotSame_error}">
                                         <p th:text="${passNotSame_error}"></p>
+                                    </div>
+                                    <div class="ml-3 mt-3">
+                                        <p>Select the role of account you want to create:</p>
+                                        <div class="form-check ml-3">
+                                            <input class="form-check-input" type="radio" name="accountRole" id="adminAccount" value="admin">
+                                            <label class="form-check-label" for="adminAccount">Admin</label>
+                                        </div>
+                                        <div class="form-check ml-3">
+                                            <input class="form-check-input" type="radio" name="accountRole" id="userAccount" value="user">
+                                            <label class="form-check-label" for="userAccount">User</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">

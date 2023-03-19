@@ -24,4 +24,5 @@ public class AdminDto {
 
     private String repeatPassword;
     private String usertype;
+    private String accountRole;
 }
