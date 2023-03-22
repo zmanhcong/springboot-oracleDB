@@ -24,7 +24,13 @@ public class UserManageController {
     AdminRepository adminRepository;
 
     @GetMapping("/user/list")
-    public String userList(){
+    public String userList(Model model){
+        List<Admin> userlist = adminRepository.findAll();
+        if (userlist == null){
+            model.addAttribute("message", "User is not found!!");
+        }else {
+            model.addAttribute("userlist", userlist);
+        }
         return "/admin/userlist";
     }
 

@@ -394,9 +394,6 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Hoverable Table</h4>
-                  <p class="card-description">
-                    Add class <code>.table-hover</code>
-                  </p>
                   <div class="table-responsive">
                     <table class="table table-hover">
                       <thead>
@@ -405,45 +402,54 @@
                           <th>Firstname</th>
                           <th>Lastname</th>
                           <th>Email</th>
-                          <th>User type</th>
+                          <th>User Type</th>
                           <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>ID or img</td>
-                          <td>manh</td>
-                          <td>cong</td>
-                          <td>zmanhcong@gmail.com</td>
-                          <td>vip1</td>
-                          <td><label class="badge badge-danger">Pending</label></td>
+                        <tr th:each="user: ${userlist}" >
+                          <td th:text="${user.id}">ID or img</td>
+                          <td th:text="${user.firstName}">manh</td>
+                          <td th:text="${user.lastName}">cong</td>
+                          <td th:text="${user.username}">zmanhcong@gmail.com</td>
+                          <td th:text="${user.usertype}"></td>
+                          <td>
+                            <div class="button-container">
+                              <button th:id="'toggle-button' + ${user.id}" th:class="'custom-button ' + (${user.active} ? 'active' : 'inactive')" th:onclick="'toggleActiveStatus(' + ${user.id} + ', ' + ${user.active} + ')'" data-toggle="modal" data-target="#activeuser">
+                                <span th:text="${user.active} ? 'Active' : 'Inactive'"></span>
+                              </button>
+                            </div>
+                          </td>
+
+                        <tr th:if="${#lists.isEmpty(#lists)}">
+                          <td  colspan="6" class="text-center">Account is not found</td>
                         </tr>
-<!--                        <tr>-->
-<!--                          <td>Messsy</td>-->
-<!--                          <td>Flash</td>-->
-<!--                          <td class="text-danger"> 21.06% <i class="ti-arrow-down"></i></td>-->
-<!--                          <td><label class="badge badge-warning">In progress</label></td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                          <td>John</td>-->
-<!--                          <td>Premier</td>-->
-<!--                          <td class="text-danger"> 35.00% <i class="ti-arrow-down"></i></td>-->
-<!--                          <td><label class="badge badge-info">Fixed</label></td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                          <td>Peter</td>-->
-<!--                          <td>After effects</td>-->
-<!--                          <td class="text-success"> 82.00% <i class="ti-arrow-up"></i></td>-->
-<!--                          <td><label class="badge badge-success">Completed</label></td>-->
-<!--                        </tr>-->
-<!--                        <tr>-->
-<!--                          <td>Dave</td>-->
-<!--                          <td>53275535</td>-->
-<!--                          <td class="text-success"> 98.05% <i class="ti-arrow-up"></i></td>-->
-<!--                          <td><label class="badge badge-warning">In progress</label></td>-->
-<!--                        </tr>-->
                       </tbody>
                     </table>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="activeuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <form id="activeuser-form" method="post">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="activeuser-title"></h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p id="activeuser-message"></p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                              <button type="submit" class="btn btn-primary" id="activeuser-button"></button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
