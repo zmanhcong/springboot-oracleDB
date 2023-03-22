@@ -34,4 +34,18 @@ public class UserManageController {
         return "/admin/userlist";
     }
 
+    @GetMapping("/pages/error-404")
+    public String error404(){
+        return "/admin/pages/samples/error-404";
+    }
+
+    @GetMapping("/pages/error-500")
+    public String error500(){
+        return "/admin/pages/samples/error-500";
+    }
+
+    @GetMapping("/pages/documentation")
+    public String ducument(){
+        return "/admin/pages/documentation/documentation";
+    }
 }

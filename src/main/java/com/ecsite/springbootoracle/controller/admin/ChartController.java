@@ -1,4 +1,4 @@
-package com.ecsite.springbootoracle.controller;
+package com.ecsite.springbootoracle.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class UserController {
+public class ChartController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @GetMapping("/user")
+    @GetMapping("/admin/chartjs")
     public String getUserData(Model model) {
         List<Map<String, Object>> userData = getUserData();
 
@@ -51,7 +51,7 @@ public class UserController {
         model.addAttribute("vip2Percentage", vip2Percentage);
         model.addAttribute("standardPercentage", standardPercentage);
         model.addAttribute("normalPercentage", normalPercentage);
-        return "user";
+        return "/admin/chartjs";
     }
 
     private List<Map<String, Object>> getUserData() {
