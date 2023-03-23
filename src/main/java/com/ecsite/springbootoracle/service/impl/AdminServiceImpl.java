@@ -47,11 +47,7 @@ public class AdminServiceImpl implements AdminService {
     public Admin update(AdminDto adminDto) {
         Optional<Admin> existingAdmin = adminRepository.findById(adminDto.getId());
 
-        if (!existingAdmin.isPresent()) {
-            return null;
-        }
-
-        Admin admin = existingAdmin.get();
+        Admin admin = new Admin();
         admin.setFirstName(adminDto.getFirstName());
         admin.setLastName(adminDto.getLastName());
         admin.setUsername(adminDto.getUsername());
@@ -67,12 +63,4 @@ public class AdminServiceImpl implements AdminService {
         return adminRepository.save(admin);
     }
 
-//    public <S extends Admin> S save(S entity) {
-//        return adminRepository.save(entity);
-//    }
-
-//    @Override
-//    public Admin findByIdnew1(Long id) {
-//        return adminRepository.findByIdnew1(id);
-//    }
 }

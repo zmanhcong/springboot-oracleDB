@@ -8,11 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
     Admin findByUsername(String username);
-
-//    @Override
-//    <S extends Admin> S save(S entity);
-
-//    @Query("SELECT a from Admin a where a.id = ?1")
-//    Admin findByIdnew1(Long id);
-
 }
