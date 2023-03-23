@@ -48,6 +48,13 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Hoverable Table</h4>
+                  <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                    <span th:text="${successMessage}"></span>
+                  </div>
+
+                  <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                  </div>
                   <div class="table-responsive">
                     <table class="table table-hover">
                       <thead>
@@ -74,7 +81,6 @@
                               </button>
                             </div>
                           </td>
-
                         <tr th:if="${#lists.isEmpty(#lists)}">
                           <td  colspan="6" class="text-center">Account is not found</td>
                         </tr>

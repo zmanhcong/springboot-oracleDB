@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminDto {
+    private Long id;
     @Size(min = 3, max = 10, message = "Invalid first name!(3-10 characters)")
     private String firstName;
     @Size(min = 3, max = 10, message = "Invalid first name!(3-10 characters)")
@@ -25,4 +26,5 @@ public class AdminDto {
     private String repeatPassword;
     private String usertype;
     private String accountRole;
+    private boolean isActive;
 }

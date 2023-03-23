@@ -84,7 +84,6 @@
   });
 })(jQuery);
 
-
 function toggleActiveStatus(userId, isActive) {
   var modalTitle = document.getElementById("activeuser-title");
   var modalMessage = document.getElementById("activeuser-message");
@@ -95,12 +94,11 @@ function toggleActiveStatus(userId, isActive) {
     modalTitle.innerHTML = "Deactivate User";
     modalMessage.innerHTML = "Are you sure you want to deactivate this user?";
     modalButton.innerHTML = "Deactivate";
-    activeuserForm.action = "/activateUser?id=" + userId;
+    activeuserForm.action = "/activateUser/" + userId;
   } else {
     modalTitle.innerHTML = "Activate User";
     modalMessage.innerHTML = "Are you sure you want to activate this user?";
     modalButton.innerHTML = "Activate";
-    activeuserForm.action = "/activateUser?id=" + userId;
+    activeuserForm.action = "/activateUser/" + userId;
   }
 }
-

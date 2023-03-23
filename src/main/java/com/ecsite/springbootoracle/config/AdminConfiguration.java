@@ -64,9 +64,10 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
     //This method is used to configure the security for HTTP requests in your application(used to specify the authorization rules for different URLs in your application, as well as the login and logout URLs and behavior.)
     @Override
     protected void configure (HttpSecurity http) throws Exception{
-        http.authorizeRequests().antMatchers("/*").permitAll()
-                .antMatchers("/admin/*")
-                .hasAuthority("ADMIN")
+        http.authorizeRequests()
+                .antMatchers("/*").permitAll()
+                .antMatchers("/activateUser/**").permitAll() // allow access without authentication
+                .antMatchers("/admin/*").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")  //login with this URL
@@ -83,6 +84,8 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll();
     }
+
+
 
     private AuthenticationFailureHandler authenticationFailureHandler() {
         return (request, response, exception) -> {
