@@ -91,7 +91,8 @@
                     <div class="modal fade" id="activeuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                          <form id="activeuser-form" method="post">
+                          <form id="activeuser-form" method="post" th:action="@{/activateUser/__USER_ID__}" >
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"  th:object="${user}" />
                             <div class="modal-header">
                               <h5 class="modal-title" id="activeuser-title"></h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -103,13 +104,12 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                              <button type="submit" class="btn btn-primary" id="activeuser-button"></button>
+                              <button type="submit" class="btn btn-primary" id="activeuser-button">filled by javascript</button>
                             </div>
                           </form>
                         </div>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>

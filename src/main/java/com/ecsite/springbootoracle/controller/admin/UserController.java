@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     private JavaMailSender mailSender;
 
-    @GetMapping("activateUser/{id}")
+    @PostMapping("activateUser/{id}")
     public String activateUser(@PathVariable("id") Long id, Model model) {
         Optional<Admin> optionalAdmin = adminRepository.findById(id);
         if (optionalAdmin.isPresent()) {
