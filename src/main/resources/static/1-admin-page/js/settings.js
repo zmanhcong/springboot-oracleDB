@@ -94,11 +94,11 @@ function toggleActiveStatus(userId, isActive) {
     modalTitle.innerHTML = "Deactivate User";
     modalMessage.innerHTML = "Are you sure you want to deactivate this user?";
     modalButton.innerHTML = "Deactivate";
-    activeuserForm.action = "/activateUser/" + userId;
   } else {
     modalTitle.innerHTML = "Activate User";
     modalMessage.innerHTML = "Are you sure you want to activate this user?";
     modalButton.innerHTML = "Activate";
-    activeuserForm.action = "/activateUser/" + userId;
   }
+
+  activeuserForm.setAttribute('action', '/activateUser/' + userId);
 }

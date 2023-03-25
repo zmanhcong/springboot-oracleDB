@@ -6,9 +6,12 @@ import com.ecsite.springbootoracle.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Controller
@@ -38,5 +41,13 @@ public class UserController {
         }
         model.addAttribute("errorMessage", "User not found");
         return "redirect:/admin/user/list";
+    }
+
+    //Add csrfToken for avoid forbidden by springsecurity
+    @RequestMapping("/admin/user/list")
+    public String userList(Model model, HttpServletRequest request) {
+        // Add this line to include CSRF token in the model
+        model.addAttribute("_csrf", (CsrfToken) request.getAttribute(CsrfToken.class.getName()));
+        return "/admin/userlist";
     }
 }
